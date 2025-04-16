@@ -6,6 +6,22 @@ var express = require('express'),
     server = require('http').Server(app),
     io = require('socket.io')(server);
 
+const path = require('path');
+
+
+app.set('trust proxy', 1); // trust first proxy
+
+// Set views directory and view engine
+app.set('views', path.join(__dirname, 'views')); // <--- Set views directory
+app.set('view engine', 'ejs');
+
+// Read the base path from environment variable, default to empty string if not set
+const basePath = process.env.BASE_PATH || '';
+
+// Make basePath available globally to your template engine
+// Example for EJS, Handlebars, Pug (check specific engine docs if needed)
+app.locals.basePath = basePath;
+
 var port = process.env.PORT || 4000;
 
 io.on('connection', function (socket) {
@@ -65,10 +81,11 @@ function collectVotesFromResult(result) {
 
 app.use(cookieParser());
 app.use(express.urlencoded());
-app.use(express.static(__dirname + '/views'));
+//app.use(express.static(__dirname + '/views'));
+app.use('/static', express.static(path.join(__dirname, 'public')));
 
 app.get('/', function (req, res) {
-  res.sendFile(path.resolve(__dirname + '/views/index.html'));
+  res.render('index');
 });
 
 server.listen(port, function () {

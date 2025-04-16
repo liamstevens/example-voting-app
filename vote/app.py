@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, make_response, g
+from flask_cors import CORS
 from redis import Redis
+from werkzeug.middleware.proxy_fix import ProxyFix
 import os
 import socket
 import random
@@ -8,9 +10,10 @@ import logging
 
 option_a = os.getenv('OPTION_A', "Cats")
 option_b = os.getenv('OPTION_B', "Dogs")
-hostname = socket.gethostname()
+hostname = 'myapp.example.com'
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1, x_prefix=1)
 
 gunicorn_error_logger = logging.getLogger('gunicorn.error')
 app.logger.handlers.extend(gunicorn_error_logger.handlers)

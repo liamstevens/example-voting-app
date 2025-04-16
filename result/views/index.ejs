@@ -7,7 +7,7 @@
     <meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
     <meta name="keywords" content="docker-compose, docker, stack">
     <meta name="author" content="Docker">
-    <link rel='stylesheet' href='<%= basePath %>/stylesheets/style.css' />
+    <link rel='stylesheet' href='<%= basePath %>/static/stylesheets/style.css' />
   </head>
   <body ng-controller="statsCtrl" >
      <div id="background-stats">
@@ -36,8 +36,9 @@
       <span ng-if="total == 1">{{total}} vote</span>
       <span ng-if="total >= 2">{{total}} votes</span>
     </div>
-    <script src="<%= basePath %>/socket.io.js"></script>
-    <script src="<%= basePath %>/angular.min.js"></script>
-    <script src="<%= basePath %>/app.js"></script>
+    <script> window.APP_BASE_PATH = "<%= basePath %>"</script>;
+    <script src="<%= basePath %>/static/socket.io.js"></script>
+    <script src="<%= basePath %>/static/angular.min.js"></script>
+    <script src="<%= basePath %>/static/app.js"></script>
   </body>
 </html>
